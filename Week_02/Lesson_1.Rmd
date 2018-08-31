@@ -1,0 +1,234 @@
+---
+title: "Lesson 1"
+author: "Matthew Martinez"
+author: "Revised from Code by Corey Sparks, PhD"
+date: "August 22, 2018"
+output: pdf_document
+---
+
+#Welcome to R.
+R is an advanced software tool used in a variety of industries and academic settings. It is quickly becoming a required tool for jobs in data analytics and academia. R is a very complex tool which can do very simple things like adding 1+1 to very sophisticated tasks like completing a textual analysis by pulling song lyrics from the internet. Go ahead and try it:
+```{r}
+#Add 1 + 1
+1+1
+
+#Pull Lyrics to the First Rap Song Ever Recorded
+  library(rvest)
+  theurl<-"https://genius.com/Sugarhill-gang-rappers-delight-lyrics"
+  html<- read_html(theurl)
+  Grablyrics<-html_nodes(html, xpath="//*[contains(concat( \" \", @class, \" \" ), concat( \" \", \"lyrics\", \" \" ))]//p")
+  lyrics<-html_text(Grablyrics)  
+  print(lyrics)
+```
+
+
+R uses libraries to do different types of analysis. Libraries contain many different types of functions and there are many different types of libraries. Libraries, like R, are all user created, but most reside in CRAN. We can access these libraries directly from R using the command `install.packages()`. Once a package is installed in your system you do not have to install it again unless you restore your hard drive or complete work on a different computer.
+
+`install.packages("car")`
+will install the lme4 library. To use the functions within it, type
+
+`library(car)`
+
+Now you have access to those functions. 
+
+Below we will go through a simple R session where we introduce some concepts that are important for R.
+
+###R is a calculator
+```{r}
+#Addition and Subtraction
+3+7
+3-7
+
+#Multiplication and Division
+3*7
+
+3/7
+
+#Powers
+3^2
+3^3
+
+#Functions
+log(3/7)
+exp(3/7)
+sin(3/7)
+
+```
+
+
+###Variables and objects
+
+In R we assign values to objects. These can generally have any name, but some names are reserved for R. For instance you probably wouldn't want to call something 'mean' because there's a 'mean()' function already in R. For instance:
+
+```{r}
+x<-3
+y<-7
+x+y
+x*y
+log(x*y)
+
+```
+
+##vectors
+R thinks everything is a matrix or a vector. A matrix is x number of rows with y number of columns. So a 2x2 matrix contains 2 rows and 2 columns. Columns can either contain numbers or characters. A vector is one row with y number of columns. One of R's big selling points is that much of it is completely vectorized. Meaning, I can apply an operation along all elements of a vector without having to write a loop. For example, if I want to multiply a vector of numbers by a constant, I can just do:
+```{r}
+x<-c(3, 4, 5, 6, 7)
+#c() makes a vector
+y<-7
+
+#Multiply Each Element of Vector x
+x*y
+
+```
+
+
+R is also very good about using vectors, let's say I wanted to find the third element of Vector x:
+```{r}
+x[3]
+
+#or if I want to test if this element is 10
+x[3]==10
+x[3]!=10
+
+#or is it larger than another number:
+x[3]>3
+
+#or is any element of the whole vector greater than 3
+x>3
+
+```
+
+
+If you want to see what's in an object, use `str()`, for `str`ucture
+
+```{r}
+str(x)
+```
+
+and we see that x is numeric, and has those values.
+
+We can also see different characteristics of x
+```{r}
+#how long is x?
+length(x)
+
+#Is x numeric?
+is.numeric(x)
+#Is x character?
+is.character(x)
+
+#Is any element of x missing?
+is.na(x)
+xc<-c("1","2")
+
+#Now I'll modify x
+x<-c(x, NA) #combine x and a missing value ==NA
+x
+is.na(x)
+```
+
+##Replacing Elements of Vectors
+Above, we had a missing value in X, let's say we want to replace it with another value:
+```{r}
+x<-ifelse(test = is.na(x)==T, yes =  sqrt(7.2), no =  x)
+print("This Can Also Be Written: x<-ifelse(is.na(x), sqrt(7.2), x)")
+x
+```
+
+##Dataframes
+Traditionally, R organizes variables into data frames, these are like a spreadsheet. The columns can have names, and the dataframe itself can have data of different types. Here we make a short data frame with three columns, two numeric and one character:
+
+```{r}
+mydat<-data.frame(
+  x=c(1,2,3,4,5),
+  y=c(10, 20, 35, 57, 37),
+  group=c("A", "A" ,"A", "B", "B")
+)
+
+#See the size of the dataframe
+dim(mydat)
+length(mydat$x)
+#Open the dataframe in a viewer and just print it
+View(mydat)
+print(mydat)
+```
+
+
+##Real data
+Now let's open a 'real' data file. This is the [2008 World population data sheet](http://www.prb.org/Publications/Datasheets/2008/2008wpds.aspx) from the [Population Reference Bureau](http://www.prb.org). It contains summary information on many demographic and population level characteristics of nations around the world in 2008.
+
+I've had this entered into a **Comma Separated Values** file by some poor previous GRA of mine and it lives happily on Github now for all the world to see. CSV files are a good way to store data coming out of a spreadsheet. R can read Excel files, but it digests text files easier. Save something from Excel as CSV. 
+
+I can read it from github directly by using a function in the `readr` library:
+
+```{r, echo=F, results='hide', message=F, tidy=TRUE}
+library(readr)
+prb<-read_csv(file = "https://raw.githubusercontent.com/coreysparks/data/master/PRB2008_All.csv")
+names(prb) #print the column names
+View(prb) #open it in a viewer
+```
+
+That's handy. If the file lived on our computer, I could read it in like so:
+*note, please make a folder on your computer so you can store things for this class in a single location! Organization is Key to Success in Graduate School*
+
+```{r}
+
+#prb<-read.csv("C:/Users/ozd504/Google Drive/classes/dem7273/class_17/data/PRB2008_All.csv")
+
+```
+
+Same result.
+
+The `haven` library can read files from other statistical packages easily, so if you have data in Stata, SAS or SPSS, you can read it into R using those functions, for example, the `read_dta()` function reads stata files. 
+
+Don't know what a function's called use ??
+
+`??stata`
+`??csv`
+
+and Rstudio will show you a list of functions that have these strings in them. 
+
+What if you know the function name, like `read.csv()` but you want to see all the function arguments?
+
+`?read.csv`
+
+will open up the help file for that specific function
+
+
+###Save a file
+Want to save something as a R data file? Use `save()`
+
+```{r}
+#save(prb, file="C:/Users/ozd504/Google Drive/classes/dem7273/class_17/data/prb_2008.Rdata")
+```
+
+If you have an R data file, use `load()` to open it:
+
+```{r}
+#load("C:/Users/ozd504/Google Drive/classes/dem7273/class_17/data/prb_2008.Rdata")
+```
+
+Personally, I prefer saving data as a .csv. This way you can open it in Excel and import it to other programs as needed.
+
+```{r}
+#write.csv(prb, file="C:/Users/ozd504/Google Drive/classes/dem7273/class_17/data/prb_2008.Rdata")
+```
+
+Let's have a look at some descriptive information about the data:
+```{r}
+#Frequency Table of # of Contries by Continent
+table(prb$Continent)
+
+#basic summary statistics for the variable TFR or the total fertility rate
+summary(prb$TFR)
+
+prb$Country[is.na(prb$e0Total)]
+subset(prb, is.na(prb$e0Total))
+```
+
+There is one country missing the Total fertility rate variable. The minimum is 1 and the maximum is 7.1 children per woman.
+
+
+More next week!!
+
+
