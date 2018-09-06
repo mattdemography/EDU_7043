@@ -1,2 +1,42 @@
-words here
-dkdkdkdkawour apoweifewp
+x<-c(5, 10, 15, 20, 25, 30)
+y<-c(-1, NA, 75, 3, 5, 8)
+z<-c(5)
+unicorn=c(x*z)
+lollipops=c(y*z)
+
+
+
+print(unicorn)
+print(lollipops)
+y<-ifelse(test=is.na(y)==T,yes=(2.5), no=y)
+print(y)
+
+Class1<-read.csv("https://raw.githubusercontent.com/mattdemography/EDU_7043/master/Data/Assignment_1.csv", stringsAsFactors = F)
+Class1[1:10,1]
+names(Class1)
+str(Class1)
+mean(as.numeric(Class1$Vcrime), na.rm = T)
+
+Class1$Vcrime_num<-as.numeric(Class1$Vcrime)
+str(Class1)
+
+mean(Class1[1:51,3])
+mean(Class1$Murder)
+attach(Class1)
+mean(Murder)
+
+median(Class1[1:51,3])
+median(Murder)
+median(Class1$Murder)
+
+cd=Class1
+subcopydata=subset(cd, State=="CT"|State=="MA"|State=="ME"|State=="NH"|State=="RI"|State=="VT")
+
+ne_states<-c("CT", "MA", "ME", "NH", "RI", "VT")
+cd$ne<-ifelse(cd$State %in% ne_states, 1, 0)
+new_data<-subset(cd, cd$ne==1)
+
+mean(subcopydata[1:6,3])
+
+cd<-ifelse(test=is.na(cd$Vcrime)==T, yes=555, no=cd$Vcrime)
+mean(cd)
