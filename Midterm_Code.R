@@ -1,3 +1,8 @@
+#Analyze Data
+mid<-read.csv(file = "https://raw.githubusercontent.com/mattdemography/EDU_7043/master/Data/GSS_2016_AA.csv", stringsAsFactors=F)
+names(mid)
+str(mid)
+
 summary(mid$PARTYID) #PartyID
   #What Are 9's and 8's? Looking at codebook, I should eliminate these from the analysis as leavign them in would skew my findings
   #and give a false representation of people's party identification.
