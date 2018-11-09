@@ -55,3 +55,6 @@ ftable(dat$SEX, dat$newpoly)
 library(gmodels)
 CrossTable(dat$SEX, dat$newpoly, prop.chisq =F)
 CrossTable(dat$SEX, dat$newpoly, expected=T)
+
+chisq.test(df$SEX, df$newpoly)
+chisq.test(df$RACE, df$newpoly)
