@@ -1,0 +1,14 @@
+d$`2012`<-ifelse(is.na(d$`2012`), 0, d$`2012`)
+d$`2013`<-ifelse(is.na(d$`2013`), 0, d$`2013`)
+d$`2014`<-ifelse(is.na(d$`2014`), 0, d$`2014`)
+
+d$adj13_num<-(d$`2012` + d$`2013` + d$`2014`)
+d$n0_12<-ifelse(d$`2012`!=0, 1, 0)
+d$n0_13<-ifelse(d$`2013`!=0, 1, 0)
+d$n0_14<-ifelse(d$`2014`!=0, 1, 0)
+d$adj13_div<-(d$n0_12 + d$n0_13 + d$n0_14)
+
+d$adj13_rate<-d$adj13_num/d$adj13_div
+
+
+summary(d$adj13)
